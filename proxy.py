@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import sys
 import requests
 
 from envparse import env
