@@ -17,7 +17,8 @@ def merge_two_dicts(x, y):
 
 def set_header():
     headers = {
-        'Host': hostname
+        'Host': hostname,
+        'Content-Type': 'application/json'
     }
 
     return headers
@@ -56,11 +57,68 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         sent = False
         try:
             url = 'http://{}{}'.format(hostname, self.path)
-            content_len = int(self.headers.getheader('content-length', 0))
+            content_len = self.headers['content-length']
+            if content_len == None:
+                content_len = 0
+            else:
+                content_len = int(content_len)
             post_body = self.rfile.read(content_len)
             req_header = self.parse_headers()
 
             resp = requests.post(url, data=post_body, headers=merge_two_dicts(
+                req_header, set_header()), verify=False)
+            sent = True
+
+            self.send_response(resp.status_code)
+            self.send_resp_headers(resp)
+            if body:
+                self.wfile.write(resp.content)
+            return
+        finally:
+            #            self.finish()
+            if not sent:
+                self.send_error(404, 'error trying to proxy')
+
+    def do_PUT(self, body=True):
+        sent = False
+        try:
+
+            url = 'http://{}{}'.format(hostname, self.path)
+            content_len = self.headers['content-length']
+            if content_len == None:
+                content_len = 0
+            else:
+                content_len = int(content_len)
+            put_body = self.rfile.read(content_len)
+            req_header = self.parse_headers()
+
+            print(req_header)
+            print(url)
+            myheaders = merge_two_dicts(req_header, set_header())
+            resp = requests.put(url, data=put_body,
+                                headers=myheaders, verify=False)
+            sent = True
+
+            self.send_response(resp.status_code)
+            self.send_resp_headers(resp)
+            if body:
+                self.wfile.write(resp.content)
+            return
+        finally:
+            #            self.finish()
+            if not sent:
+                self.send_error(404, 'error trying to proxy')
+
+    def do_DELETE(self, body=True):
+        sent = False
+        try:
+
+            url = 'http://{}{}'.format(hostname, self.path)
+            req_header = self.parse_headers()
+
+            print(req_header)
+            print(url)
+            resp = requests.delete(url, headers=merge_two_dicts(
                 req_header, set_header()), verify=False)
             sent = True
 
