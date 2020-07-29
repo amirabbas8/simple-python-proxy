@@ -95,7 +95,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
 def main():
     print('http server is starting on port {}...'.format(my_port))
-    server_address = ('127.0.0.1', my_port)
+    server_address = ('0.0.0.0', my_port)
     httpd = HTTPServer(server_address, ProxyHTTPRequestHandler)
     print('http server is running as reverse proxy')
     httpd.serve_forever()
