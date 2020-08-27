@@ -34,7 +34,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         sent = False
         try:
 
-            url = 'http://{}{}'.format(hostname, self.path)
+            url = '{}{}'.format(hostname, self.path)
             req_header = self.parse_headers()
 
             print(req_header)
@@ -56,7 +56,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self, body=True):
         sent = False
         try:
-            url = 'http://{}{}'.format(hostname, self.path)
+            url = '{}{}'.format(hostname, self.path)
             content_len = self.headers['content-length']
             if content_len == None:
                 content_len = 0
@@ -83,7 +83,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         sent = False
         try:
 
-            url = 'http://{}{}'.format(hostname, self.path)
+            url = '{}{}'.format(hostname, self.path)
             content_len = self.headers['content-length']
             if content_len == None:
                 content_len = 0
@@ -113,7 +113,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         sent = False
         try:
 
-            url = 'http://{}{}'.format(hostname, self.path)
+            url = '{}{}'.format(hostname, self.path)
             req_header = self.parse_headers()
 
             print(req_header)
